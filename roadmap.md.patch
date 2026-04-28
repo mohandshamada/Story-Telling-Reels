@@ -1,0 +1,11 @@
+--- a/roadmap.md
++++ b/roadmap.md
+@@ -37,7 +37,7 @@
+ | WebSocket progress | ✅ Done | Redis pub/sub bridge, WS endpoint, React hook |
+ | Scene editor UI | ✅ Done | Inline editing, regenerate image/audio per scene |
+ | Background music & SFX | ✅ Done | MoviePy CompositeAudioClip, music library, SFX triggers |
+-| User accounts / auth | ⏳ Pending | No JWT enforcement yet |
++| User accounts / auth | ❌ Skipped | Personal tool — single user, no auth needed |
+ | PostgreSQL | ⏳ Pending | SQLite used for MVP |
+ | Arabic support | ⏳ Pending | No normalization, tashkeel, or RTL subs |
+ | Multilingual voice cloning | ⏳ Pending | Only single-language ElevenLabs |
