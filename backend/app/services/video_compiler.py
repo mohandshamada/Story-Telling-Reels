@@ -12,6 +12,7 @@ from moviepy import (
     ImageClip,
     VideoClip,
     VideoFileClip,
+    concatenate_audioclips,
     concatenate_videoclips,
 )
 from moviepy.video.fx import FadeIn, FadeOut, CrossFadeIn
@@ -366,4 +367,3 @@ class VideoCompiler:
         return Path(tmp.name)
 
 
-from moviepy import concatenate_audioclips

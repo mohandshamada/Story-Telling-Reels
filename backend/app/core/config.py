@@ -24,10 +24,23 @@ class Settings(BaseSettings):
     # Provider Selection
     IMAGE_PROVIDER: str = "dalle"  # dalle | comfyui
     TTS_PROVIDER: str = "elevenlabs"  # elevenlabs | xtts
+    LLM_PROVIDER: str = "openai"  # openai | ollama | litellm | hybrid
 
     # OpenAI (cloud)
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o-mini"
+
+    # Ollama (local LLM)
+    OLLAMA_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama3"
+
+    # LiteLLM (unified proxy for cloud/local)
+    LITELLM_API_KEY: str = ""
+    LITELLM_BASE_URL: str = ""
+    LITELLM_MODEL: str = "openai/gpt-4o-mini"
+
+    # Hybrid fallback order (comma-separated provider names)
+    HYBRID_LLM_PRIORITY: str = "openai,litellm,ollama"
 
     # DALL-E (cloud image gen)
     DALLE_MODEL: str = "dall-e-3"

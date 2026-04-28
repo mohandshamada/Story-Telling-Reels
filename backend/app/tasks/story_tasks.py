@@ -74,7 +74,7 @@ def process_story(self, story_id: str) -> dict:
         # ------------------------------------------------------------------
         notify("processing", "parsing", 5)
 
-        parser = StoryParser()
+        parser = StoryParser(provider=story.llm_provider)
         target_scenes = max(3, min(7, story.target_duration // 8))
         scenes_data = _run(parser.parse(story.content, target_scenes=target_scenes, language=story.language))
 

@@ -14,6 +14,7 @@ class StoryBase(BaseModel):
     visual_theme: str = "watercolor_illustration"
     voice_style: str = "warm_female_storyteller"
     music_mood: str = "gentle_playful"
+    llm_provider: str | None = None
     moral_lesson: str | None = None
 
 
@@ -28,6 +29,7 @@ class StoryUpdate(BaseModel):
     visual_theme: str | None = None
     voice_style: str | None = None
     music_mood: str | None = None
+    llm_provider: str | None = None
     moral_lesson: str | None = None
 
 

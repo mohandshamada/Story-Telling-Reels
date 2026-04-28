@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
@@ -218,12 +218,15 @@ export default function StoryDetail() {
   const displayStatus = wsData?.status ?? story?.status ?? 'draft'
 
   // When WS says complete, invalidate queries to fetch final state
-  if (wsData?.type === 'complete' || wsData?.type === 'scene') {
-    setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ['story', id] })
-      queryClient.invalidateQueries({ queryKey: ['scenes', id] })
-    }, 500)
-  }
+  useEffect(() => {
+    if (wsData?.type === 'complete' || wsData?.type === 'scene') {
+      const timer = setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['story', id] })
+        queryClient.invalidateQueries({ queryKey: ['scenes', id] })
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [wsData, id, queryClient])
 
   const isProcessing =
     displayStatus !== 'completed' && displayStatus !== 'failed'

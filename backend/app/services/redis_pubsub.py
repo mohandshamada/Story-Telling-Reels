@@ -1,11 +1,14 @@
 """Redis pub/sub helper for job progress notifications."""
 
 import json
+import logging
 from typing import Any
 
 import redis.asyncio as aioredis
 
 from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class RedisPubSub:
@@ -18,8 +21,11 @@ class RedisPubSub:
         return self._redis
 
     async def publish(self, job_id: str, message: dict[str, Any]) -> None:
-        redis = await self._get_redis()
-        await redis.publish(f"job:{job_id}", json.dumps(message))
+        try:
+            redis = await self._get_redis()
+            await redis.publish(f"job:{job_id}", json.dumps(message))
+        except Exception as exc:
+            logger.debug("Redis publish failed: %s", exc)
 
     async def subscribe(self, job_id: str):
         redis = await self._get_redis()

@@ -18,6 +18,7 @@ dependencies = [
     "pillow>=10.2.0",
     "python-jose[cryptography]>=3.3.0",
     "passlib[bcrypt]>=1.7.4",
+    "bcrypt>=3.1.0,<4.0",
     "aiofiles>=23.2.1",
     "websockets>=12.0",
     "openai>=1.14.0",
@@ -26,6 +27,8 @@ dependencies = [
     "arabic-reshaper>=3.0.0",
     "psycopg2-binary>=2.9.9",
     "pyarabic>=0.6.15",
+    "email-validator>=2.0.0",
+    "litellm>=1.40.0",
 ]
 
 [project.optional-dependencies]

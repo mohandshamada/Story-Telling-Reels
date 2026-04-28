@@ -33,6 +33,7 @@ class Story(Base):
     visual_theme: Mapped[str | None] = mapped_column(String(100))
     voice_style: Mapped[str | None] = mapped_column(String(100))
     music_mood: Mapped[str | None] = mapped_column(String(100))
+    llm_provider: Mapped[str | None] = mapped_column(String(50))
     moral_lesson: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(50), default="draft")
     created_at: Mapped[datetime] = mapped_column(default=now_utc)

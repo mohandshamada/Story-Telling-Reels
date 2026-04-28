@@ -10,9 +10,25 @@ from app.models.story import Story
 from app.schemas.job import RenderJobResponse
 from app.schemas.scene import SceneResponse
 from app.schemas.story import StoryCreate, StoryResponse, StoryUpdate, StoryWithProgress
+import logging
+
 from app.tasks.story_tasks import process_story
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/stories", tags=["stories"])
+
+
+def _dispatch_task(story_id: str, job: RenderJob, db: Session) -> None:
+    """Dispatch Celery task, gracefully handling missing Redis."""
+    try:
+        process_story.delay(story_id)
+    except Exception as exc:
+        logger.warning("Celery dispatch failed (Redis unavailable?): %s", exc)
+        job.update_status(
+            "failed",
+            error_message="Background worker unavailable. Please start Redis or run docker-compose up.",
+        )
+        db.commit()
 
 
 @router.post("", response_model=StoryWithProgress, status_code=status.HTTP_201_CREATED)
@@ -28,7 +44,7 @@ def create_story(data: StoryCreate, db: Session = Depends(get_db)) -> Story:
     db.add(job)
     db.commit()
 
-    process_story.delay(story.id)
+    _dispatch_task(story.id, job, db)
 
     # Return enriched response
     return _enrich_story(story, job)
@@ -108,7 +124,7 @@ def trigger_render(story_id: str, db: Session = Depends(get_db)) -> RenderJob:
     db.commit()
     db.refresh(job)
 
-    process_story.delay(story_id)
+    _dispatch_task(story_id, job, db)
     return job
 
 

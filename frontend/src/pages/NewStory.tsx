@@ -21,6 +21,13 @@ const MOODS = [
   { value: 'upbeat_happy', label: 'Upbeat & Happy' },
 ]
 
+const LLM_PROVIDERS = [
+  { value: 'openai', label: 'OpenAI GPT-4 (Cloud)' },
+  { value: 'litellm', label: 'LiteLLM Proxy (Cloud)' },
+  { value: 'ollama', label: 'Ollama / Llama (Local)' },
+  { value: 'hybrid', label: 'Hybrid (Cloud → Local)' },
+]
+
 export default function NewStory() {
   const navigate = useNavigate()
   const [form, setForm] = useState<StoryInput>({
@@ -31,6 +38,7 @@ export default function NewStory() {
     visual_theme: 'watercolor_illustration',
     voice_style: 'warm_female_storyteller',
     music_mood: 'gentle_playful',
+    llm_provider: 'openai',
     moral_lesson: '',
   })
 
@@ -109,7 +117,7 @@ export default function NewStory() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Visual Theme</label>
             <select
@@ -150,6 +158,21 @@ export default function NewStory() {
               {MOODS.map((m) => (
                 <option key={m.value} value={m.value}>
                   {m.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">AI Story Parser</label>
+            <select
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 bg-white"
+              value={form.llm_provider}
+              onChange={(e) => setForm({ ...form, llm_provider: e.target.value })}
+            >
+              {LLM_PROVIDERS.map((p) => (
+                <option key={p.value} value={p.value}>
+                  {p.label}
                 </option>
               ))}
             </select>

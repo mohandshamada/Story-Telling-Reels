@@ -60,7 +60,9 @@ export function LoginPage() {
             Sign In
           </button>
           {mutation.isError && (
-            <p className="text-sm text-red-600">Invalid username or password.</p>
+            <p className="text-sm text-red-600">
+              {mutation.error instanceof Error ? mutation.error.message : 'An error occurred'}
+            </p>
           )}
         </form>
 
@@ -141,7 +143,9 @@ export function RegisterPage() {
             Create Account
           </button>
           {mutation.isError && (
-            <p className="text-sm text-red-600">Username or email already taken.</p>
+            <p className="text-sm text-red-600">
+              {mutation.error instanceof Error ? mutation.error.message : 'An error occurred'}
+            </p>
           )}
         </form>
 
