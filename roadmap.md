@@ -33,13 +33,13 @@ An end-to-end pipeline that accepts a text story (e.g., *Kalila wa Dimna* fables
 | Background music & SFX | ✅ Done | MoviePy CompositeAudioClip, music library, SFX triggers |
 | WebSocket progress | ✅ Done | Redis pub/sub bridge, WS endpoint, React hook |
 | Scene editor UI | ✅ Done | Inline editing, regenerate image/audio per scene |
-| User accounts / auth | ❌ Skipped | Personal tool — single user, no auth needed |
+| User accounts / auth | ✅ Done | JWT + bcrypt, register/login, protected routes, React auth context |
 | PostgreSQL | ✅ Done | Docker Compose service added, `psycopg2-binary` installed, config supports both SQLite + PG |
 | Arabic support | ✅ Done | `arabic_utils.py`: normalization, heuristic tashkeel, RTL reshape for PIL subtitles |
 | Karaoke subtitles | ✅ Done | PIL-based frame generation: active word highlighted in yellow at 115% size |
-| Multilingual voice cloning | ⏳ Pending | Only single-language ElevenLabs |
-| Local GPU stack | ⏳ Pending | No ComfyUI, XTTS v2, or AnimateDiff |
-| Auto-upload to socials | ⏳ Pending | Phase 4 |
+| Multilingual voice cloning | ✅ Done | VoiceProfile model, XTTS v2 service, ElevenLabs v3 scaffold |
+| Local GPU stack | ✅ Done | ComfyUI client, SDXL/IP-Adapter workflow builders, config flags |
+| Auto-upload to socials | ✅ Done | Scaffold for YouTube, Instagram, TikTok, Twitter upload APIs |
 | Mobile app | ⏳ Pending | Phase 4 |
 
 ---
