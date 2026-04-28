@@ -15,26 +15,43 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     SECRET_KEY: str = "change-me-in-production"
 
-    # Database (SQLite for local dev, PostgreSQL for production)
+    # Database
     DATABASE_URL: str = "sqlite:///./story_reels.db"
 
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
 
-    # OpenAI
+    # Provider Selection
+    IMAGE_PROVIDER: str = "dalle"  # dalle | comfyui
+    TTS_PROVIDER: str = "elevenlabs"  # elevenlabs | xtts
+
+    # OpenAI (cloud)
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o-mini"
 
-    # ElevenLabs
-    ELEVENLABS_API_KEY: str = ""
-    ELEVENLABS_VOICE_ID: str = "XB0fDUnXU5powFXDhCwa"  # default friendly voice
-
-    # DALL-E
+    # DALL-E (cloud image gen)
     DALLE_MODEL: str = "dall-e-3"
-    DALLE_SIZE: str = "1024x1792"  # closest to 9:16
+    DALLE_SIZE: str = "1024x1792"
+
+    # ElevenLabs (cloud TTS)
+    ELEVENLABS_API_KEY: str = ""
+    ELEVENLABS_VOICE_ID: str = "XB0fDUnXU5powFXDhCwa"
+
+    # ComfyUI (local GPU image gen)
+    COMFYUI_URL: str = "http://localhost:8188"
+    COMFYUI_WORKFLOW: str = "sdxl_base"  # sdxl_base | sdxl_ipadapter
+    COMFYUI_WIDTH: int = 576
+    COMFYUI_HEIGHT: int = 1024
+    COMFYUI_STEPS: int = 25
+    COMFYUI_CFG: float = 7.0
+
+    # XTTS v2 (local GPU TTS)
+    XTTS_MODEL_PATH: str = "tts_models/multilingual/multi-dataset/xtts_v2"
+    XTTS_DEFAULT_SPEAKER_WAV: str = ""  # path to default reference voice
+    XTTS_SPEED: float = 0.9
 
     # Storage
-    STORAGE_PROVIDER: str = "local"  # local, s3, r2
+    STORAGE_PROVIDER: str = "local"
     STORAGE_LOCAL_PATH: str = "./storage"
     S3_BUCKET: str = ""
     S3_ENDPOINT: str = ""
@@ -50,11 +67,6 @@ class Settings(BaseSettings):
     # Celery
     CELERY_BROKER_URL: str = "redis://localhost:6379/0"
     CELERY_RESULT_BACKEND: str = "redis://localhost:6379/0"
-
-    # Local AI / GPU
-    COMFYUI_URL: str = "http://localhost:8188"
-    XTTS_ENABLED: bool = False
-    COMFYUI_ENABLED: bool = False
 
     # Social Upload
     YOUTUBE_CLIENT_ID: str = ""

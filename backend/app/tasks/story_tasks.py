@@ -117,6 +117,7 @@ def process_story(self, story_id: str) -> dict:
                 generator.generate_narration(
                     scene.narration_text or "",
                     output_filename=f"{story_id}_scene_{scene.sequence_number}",
+                    language=story.language,
                 )
             )
             scene.narration_audio_url = generator.get_local_url(audio_path)
@@ -135,6 +136,18 @@ def process_story(self, story_id: str) -> dict:
                     output_filename=f"{story_id}_scene_{scene.sequence_number}",
                 )
             )
+
+            # If using ComfyUI with IP-Adapter, use first scene's image as reference for consistency
+            if settings.IMAGE_PROVIDER == "comfyui" and i > 0:
+                ref_image = generator.storage_path / "images" / f"{story_id}_scene_1.png"
+                if ref_image.exists():
+                    image_path = _run(
+                        generator.generate_image(
+                            scene.visual_prompt or "cute cartoon characters in a friendly scene",
+                            output_filename=f"{story_id}_scene_{scene.sequence_number}",
+                            reference_image=ref_image,
+                        )
+                    )
             scene.image_url = generator.get_local_url(image_path)
             _notify(job.id, {
                 "type": "scene",

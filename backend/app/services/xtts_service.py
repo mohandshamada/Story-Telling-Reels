@@ -23,12 +23,15 @@ class XTTSService:
             return
         try:
             from TTS.api import TTS
-            self.model = TTS("tts_models/multilingual/multi-dataset/xtts_v2")
+            self.model = TTS(settings.XTTS_MODEL_PATH)
             self._initialized = True
-        except Exception as exc:
+        except ImportError as exc:
             raise RuntimeError(
-                f"XTTS v2 not available. Install with: pip install TTS. Error: {exc}"
-            )
+                "XTTS v2 not available. Install with: pip install TTS\n"
+                "Then download models on first run. Error: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise RuntimeError(f"Failed to load XTTS v2: {exc}") from exc
 
     def generate(
         self,
@@ -40,9 +43,13 @@ class XTTSService:
     ) -> Path:
         """Generate narration cloning the voice from speaker_wav."""
         if language not in self.SUPPORTED_LANGUAGES:
-            raise ValueError(f"Language {language} not supported by XTTS v2")
+            raise ValueError(
+                f"Language {language} not supported by XTTS v2. "
+                f"Supported: {self.SUPPORTED_LANGUAGES}"
+            )
 
         self._ensure_loaded()
+        output_path.parent.mkdir(parents=True, exist_ok=True)
         self.model.tts_to_file(
             text=text,
             speaker_wav=str(speaker_wav),
@@ -55,11 +62,8 @@ class XTTSService:
     def extract_embedding(self, speaker_wav: Path) -> dict:
         """Extract speaker embedding for caching."""
         self._ensure_loaded()
-        # XTTS v2 handles speaker wav directly; embedding extraction
-        # would require deeper model access. For MVP, store wav path.
         return {"speaker_wav": str(speaker_wav)}
 
     def fine_tune(self, speaker_wavs: List[Path], epochs: int = 10) -> Path:
         """Fine-tune voice with additional training data."""
-        # Placeholder: real fine-tuning requires training scripts
         raise NotImplementedError("XTTS fine-tuning requires manual training setup")
